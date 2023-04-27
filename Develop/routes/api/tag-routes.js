@@ -38,16 +38,68 @@ router.get('/:id', async (req, res) => {
 
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+ try {
   // create a new tag
+const createTag = await Tag.create(
+  {
+    tag_name: req.body.tag_name,
+  }
+);
+
+  if (!createTag) {
+    res.status(400).json({message: 'unable to create Tag!'});
+  }
+  res.status(400).json({createTag});
+ 
+} catch (err) {
+  res.status(500).json({message: 'Internal Error!'})
+}
+
 });
 
-router.put('/:id', (req, res) => {
-  // update a tag's name by its `id` value
+
+
+
+
+router.put('/:id', async (req, res) => {
+
+  try {
+    const updateTag = await Tag.update(
+      {
+        tag_name: req.body.tag_name,
+        products: req.body.tag_name
+      },
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    )
+    res.status(200).json(updateTag);
+  } catch {
+    res.status(400).json({message: 'unable to update tag'})
+  }
+
 });
 
-router.delete('/:id', (req, res) => {
-  // delete on tag by its `id` value
+router.delete('/:id', async (req, res) => {
+try {
+
+  const deletedTag = await Tag.destroy({
+    where: {
+      id: req.params.id,
+    },
+  });
+
+  if (!deletedTag) {
+    res.status(404).json({message: 'Tag Id not found.'})
+    } else {
+    res.status(200).json({mesage: 'Tag Deleted!'})
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Unknown Issue!' });
+  }
 });
 
 module.exports = router;

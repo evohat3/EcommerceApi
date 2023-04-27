@@ -55,18 +55,18 @@ const createProd = await Product.create(
     price: req.body.price,
     stock: req.body.stock,
     category_id: req.body.category_id,
-    tagIds: []
+    tagIds: [],
 
-});
+  }
+);
 
 if (!createProd) {
-  res.status(400).json({messsage: 'unable to create Product'})
+  res.status(400).json({messsage: 'unable to create Product!'});
 }
 res.status(200).json(createProd);
 } catch (err) {
-  res.status(500).json({message: 'internal error'})
+  res.status(500).json({message: 'Internal Error!'})
 }
-
 
   Product.create(req.body)
     .then((product) => {
